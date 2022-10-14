@@ -23,7 +23,6 @@ void bubbleSort(int n){
 //향상된 버블 정렬 : 정렬 완료되면 종료 / 이미 정렬된 경우 정렬 카운트 단축
 //(출처 : 1기 알튜비튜 풀이 코드)
 void bubbleSortAdv(int n){
-    int cnt = 0;
 
     for (int i = 0; i < n; i++) {
         bool flag = true;
@@ -33,7 +32,6 @@ void bubbleSortAdv(int n){
                 flag = false;
                 swap(arr[j - 1], arr[j]); //swap 함수
             }
-            cnt++;
         }
         //출력할게 아니라면 return 으로 수정해도 됨
         if(flag)
@@ -51,7 +49,6 @@ int main(){
         cin >> arr[i];
     }
     bubbleSort(n);
-    cout << "-------------------";
     //bubbleSortAdv(n);
     for(int i=0; i<n; i++) {
         cout << arr[i] << '\n';
@@ -64,3 +61,4 @@ int main(){
 //배열 크기만큼 할당 해주어야 : arr.assign(n,0);
 //for문 조건 = 유무: j<=n-i
 //함수 리턴 타입 지정 잘못해서 컴파일 에러: void bubbleSort
+
