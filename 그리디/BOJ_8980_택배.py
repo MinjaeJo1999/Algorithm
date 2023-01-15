@@ -60,13 +60,12 @@ def sol() :
     answer = 0
     for s, e, b in arr :
         _min = c
-        for i in range(s,e) :
-            print(_min, box[i])
-            _min = min(_min, box[i])
-        _min = min(_min,b)
-        for i in range(s, e) :
-            box[i] -= _min
-        answer += _min
+        for i in range(s,e) : #구간에 택배 채워넣기
+            _min = min(_min, box[i]) #현재 구간의 잉여 공간 파악
+        _min = min(_min,b) # 잉여 공간 vs 전달할 택배 개수에서 더 작은 수가 넣을 수 있는 택배의 개수가 됨
+        for i in range(s, e) : #구간에 넣은 택배 정보 업데이트
+            box[i] -= _min # 넣은 만큼 값을 빼서 현재 잉여 공간 수치 업데이트
+        answer += _min #넣어진 택배는 배송이 보장되므로 바로 박스 수 업데이트
     print(answer)
 
 sol()
