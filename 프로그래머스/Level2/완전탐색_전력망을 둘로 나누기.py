@@ -51,6 +51,7 @@ wires = [[1,3],[2,3],[3,4],[4,5],[4,6],[4,7],[7,8],[7,9]]
 
 
 # 풀이 출처 : https://velog.io/@s2ul2/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4level2-%EC%A0%84%EB%A0%A5%EB%A7%9D%EC%9D%84-%EB%91%98%EB%A1%9C-%EB%82%98%EB%88%84%EA%B8%B0-Python%ED%8C%8C%EC%9D%B4%EC%8D%AC
+# bfs 활용
 from collections import deque
 
 def bfs(graph, start, visited):
@@ -72,7 +73,6 @@ def bfs(graph, start, visited):
                 visited[i] = True
     return cnt
 
-# bfs 활용
 def solution1(n, wires):
     answer = n - 2 #  두 전력망이 갖게 되는 송전탑의 개수 차이의 절댓값 중 최댓값 (만약 n이 9일때 최대 절댓값은 두 전력망이 1과 8일때 즉 7이된다.)
     for i in range(len(wires)):
@@ -95,7 +95,7 @@ def solution1(n, wires):
     return answer
 
 
-# 집합 활용 (유니온 파인드)
+# 집합 활용 , 이해 못함
 def solution2(n, wires):
     ans = n
     for sub in (wires[i+1:] + wires[:i] for i in range(len(wires))):
@@ -103,3 +103,48 @@ def solution2(n, wires):
         [s.update(v) for _ in sub for v in sub if set(v) & s]  # 집합연산자 & : 교집합 연산,   집합연산자 update : 여러데이터를 한번에 추가
         ans = min(ans, abs(2 * len(s) - n))
     return ans
+
+
+# 풀이 출처 : https://velog.io/@ledcost/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-86971-%ED%8C%8C%EC%9D%B4%EC%8D%AC-%EC%A0%84%EB%A0%A5%EB%A7%9D%EC%9D%84-%EB%91%98%EB%A1%9C-%EB%82%98%EB%88%84%EA%B8%B0-level-2-DFS-or-UF
+# DFS 풀이
+def DFS(v, graph, visited, check_link):
+    cnt = 1
+    visited[v] = True
+
+    for adj_v in graph[v]:
+        # 방문 이력이 없고, 그 간선이 임시로 없앤 간선이 아닌 경우
+        if visited[adj_v] == False and check_link[v][adj_v]:
+            cnt += DFS(adj_v, graph, visited, check_link)
+
+    return cnt
+
+
+def solution3(n, wires):
+    answer = INF
+
+    # 없앤 간선인지 아닌지 체크 값이 들어있는 리스트
+    check_link = [[True] * (n + 1) for _ in range(n + 1)]
+
+    graph = [[] for _ in range(n + 1)]
+    cnt_all = []
+
+    for a, b in wires:
+        graph[a].append(b)
+        graph[b].append(a)
+
+    for a, b in wires:
+        visited = [False] * (n + 1)
+
+        check_link[a][b] = False  # a-b 간선 끊기
+        cnt_a = DFS(a, graph, visited, check_link)
+        cnt_b = DFS(b, graph, visited, check_link)
+        check_link[a][b] = True  # a-b 간선 다시 연결
+
+        answer = min(answer, abs(cnt_a - cnt_b))
+
+    return answer
+
+
+# 다른 풀이 : 유니온 파인드 (개념 학습 전)
+
+#복습 요함, 이해 미완
