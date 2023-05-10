@@ -33,7 +33,7 @@ def dijkstra(start) :
         # 현재 노드와 연결된 다른 인접한 노드들을 확인
         for i in graph[now] :
             cost = dist + i[1]
-            if cost < distance[0] :
+            if cost < distance[i[0]] :
                 distance[i[0]] = cost
                 heapq.heappush(q, (cost, i[0]))
 
@@ -80,6 +80,6 @@ if distance[now] < dist:  # ?? 이해 안되었던 부분
 # heapq에 있는 그러한 노드 정보를 pass 하도록 하는 로직임
 # > distance 리스트와 heapq가 갱신 함께 한다고 생각했음
 # > distance는 인덱스 == 노드이고 최소값이 갱신되는 공간이지만
-# > 각 인접 노드의 값 갱신되는 모든 순서쌍이 다 담기는 공간 이라는 점 캐치하지 못했음
+# > heapq는 각 인접 노드의 값 갱신되는 모든 순서쌍이 다 담기는 공간 이라는 점 캐치하지 못했음
 
 # 복습 요함
